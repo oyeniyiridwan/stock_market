@@ -47,29 +47,37 @@ class StockProvider with ChangeNotifier {
         final url = Uri.parse(
             'http://api.marketstack.com/v1/tickers/${symbols[i]}/eod?access_key=da1e556bdb3de20985c492739e3d4bfd&date_from=$dateFrom&date_to=$dateTo');
         var response = await http.get(url);
-        print(response.statusCode);
         final json = StockModel.fromJson(jsonDecode(response.body));
-        // _data.add(MainModel(data: Data2(
-        //   name: json.data!.name,
-        //   eod:  json.data!.eod!.firstWhere((eod) => eod.date!.contains(date))
-        // )
-        // ));
-        // print(data[i].data!.eod!.volume);
-        _stock.add(json);
+        if(response.statusCode == 200){
+        _stock.add(json);}
+        else{
+          Fluttertoast.showToast(
+              msg: 'empty list',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.white,
+              textColor: Colors.black87,
+              fontSize: 16.0);
+          break;
+        }
         notifyListeners();
       } catch (e) {
-        Fluttertoast.showToast(
-            msg: 'Pls put location on',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.white,
-            textColor: Colors.black87,
-            fontSize: 16.0);
         rethrow;
       }
     }
-    mainData();
+    if (_stock.isNotEmpty){
+    mainData();}
+    else{
+      Fluttertoast.showToast(
+          msg: 'empty list',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.black87,
+          fontSize: 16.0);
+    }
   }
+
 
   void pickedDate(String newDate) {
     date = newDate;
