@@ -136,138 +136,166 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: CircularProgressIndicator(),
                               ),
                             )
-                          : Column(
-                              children: [
-                                Row(
+                          : data.data.isNotEmpty
+                              ? Column(
                                   children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'Company',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'Open',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'Low',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'High',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'Change',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                        SizedBox(
+                                            width: constraint.maxWidth / 6,
+                                            child: const Center(
+                                                child: Text(
+                                              'Close',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ))),
+                                      ],
+                                    ),
                                     SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'Company',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                    SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'Open',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                    SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'Low',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                    SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'High',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                    SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'Change',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                    SizedBox(
-                                        width: constraint.maxWidth / 6,
-                                        child: const Center(
-                                            child: Text(
-                                          'Close',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 600,
-                                  child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      String change = ((double.parse(data
-                                                      .data[index]
-                                                      .data!
-                                                      .eod!
-                                                      .open
-                                                      .toString()) -
+                                      height: 600,
+                                      child: ListView.builder(
+                                        itemBuilder: (context, index) {
+                                          String change = ((double.parse(data
+                                                          .data[index]
+                                                          .data!
+                                                          .eod!
+                                                          .close
+                                                          .toString()) -
+                                                      double.parse(data
+                                                          .data[index]
+                                                          .data!
+                                                          .eod!
+                                                          .open
+                                                          .toString())) *
+                                                  100 /
                                                   double.parse(data.data[index]
                                                       .data!.eod!.close
-                                                      .toString())) *
-                                              100 /
-                                              double.parse(data
-                                                  .data[index].data!.eod!.open
-                                                  .toString()))
-                                          .toStringAsPrecision(3);
-                                      return Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 10),
-                                            child: SizedBox(
-                                                width: constraint.maxWidth / 6,
-                                                height: 50,
-                                                child: Center(
-                                                    child: Text(
-                                                  data.data[index].data!.name
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ))),
-                                          ),
-                                          SizedBox(
-                                              width: constraint.maxWidth / 6,
-                                              child: Center(
-                                                  child: Text(data.data[index]
-                                                      .data!.eod!.open
-                                                      .toString()))),
-                                          SizedBox(
-                                              width: constraint.maxWidth / 6,
-                                              child: Center(
-                                                  child: Text(data.data[index]
-                                                      .data!.eod!.low
-                                                      .toString()))),
-                                          SizedBox(
-                                              width: constraint.maxWidth / 6,
-                                              child: Center(
-                                                  child: Text(data.data[index]
-                                                      .data!.eod!.high
-                                                      .toString()))),
-                                          SizedBox(
-                                              width: constraint.maxWidth / 6,
-                                              child: Center(
-                                                  child: Text(
-                                                change,
-                                                style: TextStyle(
-                                                    color:
-                                                        double.parse(change) > 0
+                                                      .toString()))
+                                              .toStringAsPrecision(3);
+                                          return Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10),
+                                                child: SizedBox(
+                                                    width:
+                                                        constraint.maxWidth / 6,
+                                                    height: 50,
+                                                    child: Center(
+                                                        child: Text(
+                                                      data.data[index].data!
+                                                          .name
+                                                          .toString(),
+                                                      maxLines: 2,
+                                                      style: const TextStyle(
+                                                          fontSize: 12),
+                                                    ))),
+                                              ),
+                                              SizedBox(
+                                                  width:
+                                                      constraint.maxWidth / 6,
+                                                  child: Center(
+                                                      child: Text(data
+                                                          .data[index]
+                                                          .data!
+                                                          .eod!
+                                                          .open
+                                                          .toString()))),
+                                              SizedBox(
+                                                  width:
+                                                      constraint.maxWidth / 6,
+                                                  child: Center(
+                                                      child: Text(data
+                                                          .data[index]
+                                                          .data!
+                                                          .eod!
+                                                          .low
+                                                          .toString()))),
+                                              SizedBox(
+                                                  width:
+                                                      constraint.maxWidth / 6,
+                                                  child: Center(
+                                                      child: Text(data
+                                                          .data[index]
+                                                          .data!
+                                                          .eod!
+                                                          .high
+                                                          .toString()))),
+                                              SizedBox(
+                                                  width:
+                                                      constraint.maxWidth / 6,
+                                                  child: Center(
+                                                      child: Text(
+                                                    change,
+                                                    style: TextStyle(
+                                                        color: double.parse(
+                                                                    change) >
+                                                                0
                                                             ? Colors.green
                                                             : Colors.red),
-                                              ))),
-                                          SizedBox(
-                                            width: constraint.maxWidth / 6,
-                                            child: Center(
-                                                child: Text(data.data[index]
-                                                    .data!.eod!.close
-                                                    .toString())),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                    itemCount: data.data.length,
-                                  ),
-                                ),
-                              ],
-                            ),
+                                                  ))),
+                                              SizedBox(
+                                                width: constraint.maxWidth / 6,
+                                                child: Center(
+                                                    child: Text(data.data[index]
+                                                        .data!.eod!.close
+                                                        .toString())),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                        itemCount: data.data.length,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(
+                                  height: 600,
+                                  child: Center(
+                                      child: Text(
+                                    'Empty Data',
+                                    style: TextStyle(fontSize: 25),
+                                  ))),
                     ],
                   ),
                 );

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -16,8 +16,11 @@ class StockProvider with ChangeNotifier {
     return [..._search];
   }
 
-  String date = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().subtract(const Duration(days: 1)));
+  String date = ((DateTime.now().hour >= 15 && DateTime.now().minute > 30) ||
+          DateTime.now().hour > 15)
+      ? DateFormat('yyyy-MM-dd').format(DateTime.now())
+      : DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(const Duration(days: 1)));
 
   Future<void> getStock() async {
     final dateTo = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -28,48 +31,44 @@ class StockProvider with ChangeNotifier {
       'AAPL',
       'MSFT',
       'GOOGL',
-      'FB',
-      'BRK.A',
+      'T',
+      'BABA',
       'VOD',
       'JPM',
       'JNJ',
       'PG'
     ];
     symbols.shuffle();
-    // final queryParameters = {
-    //   'access_key': '58ea9a89e96f7786bf147b2671e0968f',
-    //   'date_from': dateFrom,
-    //   'date_to': dateTo,
-    // };
-
-    for (int i = 0; i < 2; i++) {
+    if (await ConnectivityWrapper.instance.isConnected) {
       try {
-        final url = Uri.parse(
-            'http://api.marketstack.com/v1/tickers/${symbols[i]}/eod?access_key=da1e556bdb3de20985c492739e3d4bfd&date_from=$dateFrom&date_to=$dateTo');
-        var response = await http.get(url);
-        final json = StockModel.fromJson(jsonDecode(response.body));
-        if(response.statusCode == 200){
-        _stock.add(json);}
-        else{
+        for (int i = 0; i < 10; i++) {
+          final url = Uri.parse(
+              'http://api.marketstack.com/v1/tickers/${symbols[i]}/eod?access_key=98a9ab33764b153d7a9eddd8b914a79a&date_from=$dateFrom&date_to=$dateTo');
+          var response = await http.get(url);
+          final json = StockModel.fromJson(jsonDecode(response.body));
+          if (response.statusCode == 200) {
+            _stock.add(json);
+          }
+          notifyListeners();
+        }
+        if (_stock.isNotEmpty) {
+          mainData();
+          print(date);
+        } else {
           Fluttertoast.showToast(
-              msg: 'empty list',
+              msg: 'An Error occurred',
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: Colors.white,
               textColor: Colors.black87,
               fontSize: 16.0);
-          break;
         }
-        notifyListeners();
       } catch (e) {
         rethrow;
       }
-    }
-    if (_stock.isNotEmpty){
-    mainData();}
-    else{
+    } else {
       Fluttertoast.showToast(
-          msg: 'empty list',
+          msg: 'Device is Offline',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.white,
@@ -77,7 +76,6 @@ class StockProvider with ChangeNotifier {
           fontSize: 16.0);
     }
   }
-
 
   void pickedDate(String newDate) {
     date = newDate;
@@ -87,7 +85,10 @@ class StockProvider with ChangeNotifier {
 
   void mainData() {
     _data = [];
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < _stock.length; i++) {
+      // print(_stock.length);
+      // print(_stock[i].data!.name);
+      // print(_stock[i].data!.eod![0].date);
       _data.add(MainModel(
           data: Data2(
               name: _stock[i].data!.name,
@@ -111,3 +112,5 @@ class StockProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+void date() {}
