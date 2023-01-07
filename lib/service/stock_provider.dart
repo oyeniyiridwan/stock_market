@@ -89,16 +89,21 @@ class StockProvider with ChangeNotifier {
   void mainData() {
     _data = [];
     for (int i = 0; i < _stock.length; i++) {
-      if(_stock[i].data!.eod!.any((element) => element!.date!.contains(date))){
-      _data.add(MainModel(
-          data: Data2(
-              name: _stock[i].data!.name,
-              eod: _stock[i]
-                  .data!
-                  .eod!
-                  .firstWhere((eod) => eod.date!.contains(date)))));}
+      if (_stock[i]
+          .data!
+          .eod!
+          .any((element) => element!.date!.contains(date))) {
+        _data.add(MainModel(
+            data: Data2(
+                name: _stock[i].data!.name,
+                eod: _stock[i]
+                    .data!
+                    .eod!
+                    .firstWhere((eod) => eod.date!.contains(date)))));
+      }
     }
     _search = _data;
+
     notifyListeners();
   }
 
@@ -113,4 +118,3 @@ class StockProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-
