@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stock/my_home_page.dart';
+import 'package:stock/service/service_locator.dart';
 import 'package:stock/service/stock_provider.dart';
 
-void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => StockProvider()),
-    ],
-    child: const MyApp(),
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  setup();
+  StockProvider stock =  GetIt.instance.get<StockProvider>();
+  await stock.getStock();
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: stock),
+        ],
+    child:const MyApp(),
   ));
 }
 

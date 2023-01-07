@@ -57,7 +57,7 @@ class StockProvider with ChangeNotifier {
         } else {
           Fluttertoast.showToast(
               msg: 'An Error occurred',
-              toastLength: Toast.LENGTH_SHORT,
+              toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: Colors.white,
               textColor: Colors.black87,
@@ -69,7 +69,7 @@ class StockProvider with ChangeNotifier {
     } else {
       Fluttertoast.showToast(
           msg: 'Device is Offline',
-          toastLength: Toast.LENGTH_SHORT,
+          toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.white,
           textColor: Colors.black87,
@@ -86,16 +86,14 @@ class StockProvider with ChangeNotifier {
   void mainData() {
     _data = [];
     for (int i = 0; i < _stock.length; i++) {
-      // print(_stock.length);
-      // print(_stock[i].data!.name);
-      // print(_stock[i].data!.eod![0].date);
+      if(_stock[i].data!.eod!.any((element) => element!.date!.contains(date))){
       _data.add(MainModel(
           data: Data2(
               name: _stock[i].data!.name,
               eod: _stock[i]
                   .data!
                   .eod!
-                  .firstWhere((eod) => eod.date!.contains(date)))));
+                  .firstWhere((eod) => eod.date!.contains(date)))));}
     }
     _search = _data;
     notifyListeners();
@@ -113,4 +111,3 @@ class StockProvider with ChangeNotifier {
   }
 }
 
-void date() {}
