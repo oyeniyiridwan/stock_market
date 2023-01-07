@@ -11,6 +11,9 @@ class StockProvider with ChangeNotifier {
   List<StockModel> _stock = [];
   List<MainModel> _data = [];
   List<MainModel> _search = [];
+  List<StockModel> get stock {
+    return [..._stock];
+  }
 
   List<MainModel> get data {
     return [..._search];

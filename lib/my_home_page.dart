@@ -307,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           'Empty Data',
                                           style: TextStyle(fontSize: 25),
                                         ),
-                                                SizedBox(
+                                                if(stock.stock.isEmpty)SizedBox(
                                                   width: 100,
                                                   child: ElevatedButton(onPressed: ()async{
                                                     isLoading = true;
