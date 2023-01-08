@@ -44,9 +44,15 @@ class StockProvider with ChangeNotifier {
     symbols.shuffle();
     if (await ConnectivityWrapper.instance.isConnected) {
       try {
+        Map<String, String> queryParams = {
+          'access_key': '98a9ab33764b153d7a9eddd8b914a79a',
+          'date_from': dateFrom,
+          'date_to': dateTo
+        };
+
         for (int i = 0; i < 10; i++) {
-          final url = Uri.parse(
-              'http://api.marketstack.com/v1/tickers/${symbols[i]}/eod?access_key=98a9ab33764b153d7a9eddd8b914a79a&date_from=$dateFrom&date_to=$dateTo');
+          final url = Uri.http('api.marketstack.com',
+              '/v1/tickers/${symbols[i]}/eod', queryParams);
           var response = await http.get(url);
           final json = StockModel.fromJson(jsonDecode(response.body));
           if (response.statusCode == 200) {
